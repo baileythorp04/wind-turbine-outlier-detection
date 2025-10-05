@@ -27,12 +27,12 @@ def remove_outliers_KNN(data : pd.DataFrame):
     
 
 if __name__ == "__main__":
-    data = pd.read_csv('data/kelmarsh_preprocessed.csv')
+    data = pd.read_csv('data/RECOV_kelmarsh_preprocessed.csv')
 
     inliers, outliers = remove_outliers_KNN(data)
 
-    pd.DataFrame.to_csv(outliers, 'data/kelmarsh_outliers.csv')
-    pd.DataFrame.to_csv(inliers, 'data/kelmarsh_inliers.csv')
+    pd.DataFrame.to_csv(outliers, 'data/RECOV_kelmarsh_outliers.csv')
+    pd.DataFrame.to_csv(inliers, 'data/RECOV_kelmarsh_inliers.csv')
 
     #Cant do testing without ground truth. The paper gets ground truth by doing uisng many models and averaging/maxing the results
     #y_test_pred, y_test_pred_confidence = clf.predict(X_test, return_confidence=True)  # outlier labels (0 or 1) and confidence in the range of [0,1]

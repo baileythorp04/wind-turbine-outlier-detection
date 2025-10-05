@@ -20,9 +20,10 @@ import pandas as pd
 def isolate_columns(data : pd.DataFrame, keep=[], remove=[]):
 
     nan_cols = ['Energy Export counter (kWh)', 'Energy Export (kWh)', 'Energy Import (kWh)', 'Energy Import counter (kWh)', 'Lost Production (Contractual Custom) (kWh)', 'Lost Production (Contractual Global) (kWh)', 'Potential power met mast anemometer (kW)', 'Potential power estimated (kW)', 'Potential power met mast anemometer MPC (kW)', 'Time-based Contractual Avail. (Global)', 'Time-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Global)', 'Reactive Energy Export (kvarh)', 'Reactive Energy Export counter (kvarh)', 'Reactive Energy Import (kvarh)', 'Reactive Energy Import counter (kvarh)', 'Equivalent Full Load Hours counter (s)', 'Production Factor', 'Performance Index']
-    
+    #nan_cols = []
     for col in nan_cols:
-        data = data.drop(labels=col, axis='columns')
+        if col in data.columns:
+            data = data.drop(labels=col, axis='columns')
         
 
     if len(keep) > 0:
@@ -48,8 +49,8 @@ def remove_bad_codes(data, codes):
 if __name__ == "__main__":
     columns_to_keep = ["Date and time", "Wind speed (m/s)", "Power (kW)", 'Blade angle (pitch position) A (°)', "Rotor speed (RPM)"]
     columns_to_remove = ["Date and time"]
-    input_file_name = 'data/kelmarsh.csv'
-    output_file_name = 'data/kelmarsh_preprocessed.csv'
+    input_file_name = 'data/kelmarsh_2.csv'
+    output_file_name = 'data/RECOV_kelmarsh_preprocessed.csv'
 
     data = pd.read_csv(input_file_name)
 

@@ -9,9 +9,9 @@ import pandas as pd
 
 def Three_Curves(n, inlier_data, outlier_data = None):
 
+    plt.suptitle(f"Three PCs for Turbine {n}")
+    
     fig, axes = plt.subplots(1, 3, figsize=(15, 5)) 
-
-    plt.title(f"Three PCs for Turbine {n}")
 
     y_labels = ['Power (kW)', 'Blade angle (pitch position) A (°)', 'Rotor speed (RPM)']
 
@@ -24,16 +24,17 @@ def Three_Curves(n, inlier_data, outlier_data = None):
         ax.set_xlim(left=0)
         #ax.set_ylim(bottom=0)
 
+    axes[1].set_ylim(bottom=-5)
     plt.show()
 
 def Four_By_Four():
     pass
 
 if __name__ == "__main__":
-    inlier_data = pd.read_csv('data/kelmarsh_inliers.csv')
-    outlier_data = pd.read_csv('data/kelmarsh_outliers.csv')
+    #inlier_data = pd.read_csv('data/RECOV_kelmarsh_inliers.csv')
+    #outlier_data = pd.read_csv('data/RECOV_kelmarsh_outliers.csv')
 
-    Three_Curves(1, inlier_data,outlier_data)
+    #Three_Curves(1, inlier_data,outlier_data)
 
-    #prepped_data = pd.read_csv('data/kelmarsh_preprocessed.csv')
-    #Three_Curves(prepped_data)
+    og_data = pd.read_csv('data/kelmarsh_1.csv')
+    Three_Curves(1, og_data)
