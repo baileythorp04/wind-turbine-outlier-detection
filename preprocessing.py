@@ -15,29 +15,47 @@ import pandas as pd
         # power is negative
         # any missing value
 
-def preprocess_data(columns, input_file, output_file):
-    all_data = pd.read_csv(input_file)
 
-    filtered_data = all_data[columns]
-    print(f"head: {filtered_data.columns}")
+#
+def isolate_columns(data : pd.DataFrame, keep=[], remove=[]):
 
-    #pd.DataFrame.to_csv(filtered_data, 'data/Turbine_Data.csv')
-    #filtered_data = pd.read_csv('data/Turbine_Data.csv')
+    nan_cols = ['Energy Export counter (kWh)', 'Energy Export (kWh)', 'Energy Import (kWh)', 'Energy Import counter (kWh)', 'Lost Production (Contractual Custom) (kWh)', 'Lost Production (Contractual Global) (kWh)', 'Potential power met mast anemometer (kW)', 'Potential power estimated (kW)', 'Potential power met mast anemometer MPC (kW)', 'Time-based Contractual Avail. (Global)', 'Time-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Global)', 'Reactive Energy Export (kvarh)', 'Reactive Energy Export counter (kvarh)', 'Reactive Energy Import (kvarh)', 'Reactive Energy Import counter (kvarh)', 'Equivalent Full Load Hours counter (s)', 'Production Factor', 'Performance Index']
+    
+    for col in nan_cols:
+        data = data.drop(labels=col, axis='columns')
+        
 
+    if len(keep) > 0:
+        data = data[keep]
+    
+    if len(remove) > 0:
+        data = data.drop(labels=remove, axis='columns')
 
-    print(filtered_data.shape)
-    data = filtered_data.dropna()
-    print(data.shape)
+    return data
+
+def remove_extreme_outliers(data):
+
+    data = data.dropna()
     data = data[data['Power (kW)'] > 0 ]
-    print(data.shape)
     data = data[data['Blade angle (pitch position) A (°)'] < 20]
-    print(data.shape)
 
-    pd.DataFrame.to_csv(data, 'data/Turbine_Data_preprocessed.csv')
+    return data
+
+def remove_bad_codes(data, codes):
+    pass #filter data by power code = on/safe?
 
 
-columns_to_keep = ["Date and time", "Wind speed (m/s)", "Power (kW)", 'Blade angle (pitch position) A (°)', "Rotor speed (RPM)"]
-input_file_name = 'data/Turbine_Data_All.csv'
-output_file_name = 'data/Turbine_Data_Preprocessed.csv'
+if __name__ == "__main__":
+    columns_to_keep = ["Date and time", "Wind speed (m/s)", "Power (kW)", 'Blade angle (pitch position) A (°)', "Rotor speed (RPM)"]
+    columns_to_remove = ["Date and time"]
+    input_file_name = 'data/kelmarsh.csv'
+    output_file_name = 'data/kelmarsh_preprocessed.csv'
 
-preprocess_data(columns_to_keep, input_file_name, output_file_name)
+    data = pd.read_csv(input_file_name)
+
+    data = isolate_columns(data, remove=columns_to_remove)
+    data = remove_extreme_outliers(data)
+    #data = remove_bad_codes(data, codes)
+
+    pd.DataFrame.to_csv(data, output_file_name)
+
