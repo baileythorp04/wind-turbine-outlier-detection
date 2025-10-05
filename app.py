@@ -9,8 +9,9 @@ from graphing import Three_Curves
 
 n = 1 #turbine number
 model = "SVMKNN"
+force_remake_files = True
 
-if os.path.exists(f"data/kelmarsh_{n}_{model}_outliers.csv"):
+if os.path.exists(f"data/kelmarsh_{n}_{model}_outliers.csv") and not force_remake_files:
     inliers = pd.read_csv(f"data/kelmarsh_{n}_{model}_inliers.csv")
     outliers = pd.read_csv(f"data/kelmarsh_{n}_{model}_outliers.csv")
 else:
@@ -31,4 +32,7 @@ else:
     pd.DataFrame.to_csv(outliers, f"data/kelmarsh_{n}_{model}_outliers.csv")
 
 modifier = f"{model} outlier detection"
-Three_Curves(f"Turbine {n}, {modifier}", inliers, outliers)
+filename = f"t{n}_{model}"
+#filename = f"t{n}_{modifier}"
+
+Three_Curves(f"Turbine {n}, {modifier}", inliers, outliers, filename)

@@ -7,11 +7,10 @@ import pandas as pd
 #Wind speed (m/s),Power (kW),Blade angle (pitch position) A (°),Rotor speed (RPM)
 
 
-def Three_Curves(title, inlier_data, outlier_data = None):
+def Three_Curves(title, inlier_data, outlier_data = None, filename = None):
 
 
     fig, axes = plt.subplots(1, 3, figsize=(15, 5)) 
-    plt.suptitle(title)
 
     y_labels = ['Power (kW)', 'Blade angle (pitch position) A (°)', 'Rotor speed (RPM)']
 
@@ -24,6 +23,9 @@ def Three_Curves(title, inlier_data, outlier_data = None):
         #ax.set_xlim(left=0)
         #ax.set_ylim(bottom=0)
 
+    plt.suptitle(title)
+    if filename is not None:
+        plt.savefig(f"graphs/{filename}.png")
     plt.show()
 
 def Four_By_Four():

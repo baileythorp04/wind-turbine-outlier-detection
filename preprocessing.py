@@ -19,7 +19,7 @@ import pandas as pd
 #
 def isolate_columns(data : pd.DataFrame, keep=[], remove=[]):
 
-    nan_cols = ['Energy Export counter (kWh)', 'Energy Export (kWh)', 'Energy Import (kWh)', 'Energy Import counter (kWh)', 'Lost Production (Contractual Custom) (kWh)', 'Lost Production (Contractual Global) (kWh)', 'Potential power met mast anemometer (kW)', 'Potential power estimated (kW)', 'Potential power met mast anemometer MPC (kW)', 'Time-based Contractual Avail. (Global)', 'Time-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Global)', 'Reactive Energy Export (kvarh)', 'Reactive Energy Export counter (kvarh)', 'Reactive Energy Import (kvarh)', 'Reactive Energy Import counter (kvarh)', 'Equivalent Full Load Hours counter (s)', 'Production Factor', 'Performance Index']
+    nan_cols = ['Energy Export counter (kWh)', 'Energy Export (kWh)', 'Energy Import (kWh)', 'Energy Import counter (kWh)', 'Lost Production (Contractual Custom) (kWh)', 'Lost Production (Contractual Global) (kWh)', 'Potential power met mast anemometer (kW)', 'Potential power estimated (kW)', 'Potential power met mast anemometer MPC (kW)', 'Time-based Contractual Avail. (Global)', 'Time-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Global)', 'Reactive Energy Export (kvarh)', 'Reactive Energy Export counter (kvarh)', 'Reactive Energy Import (kvarh)', 'Reactive Energy Import counter (kvarh)', 'Equivalent Full Load Hours counter (s)', 'Production Factor', 'Performance Index', 'Lost Production (Production-based IEC B.2.3) (kWh)', 'Production-based IEC B.2.3 (Users View)']
     #nan_cols = []
     for col in nan_cols:
         if col in data.columns:
