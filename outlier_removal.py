@@ -24,8 +24,8 @@ def do_KNN_OD(data : pd.DataFrame):
     return remove_outliers(data, clf)
 
 def do_SVMKNN_OD(data : pd.DataFrame):
-    clf = SVMKNNDetector(contamination=0.10, svm_kernel='rbf', svm_nu=0.5, svm_gamma='scale',
-        knn_n_neighbors=30, knn_method='median', gate_percentile=60)
+    clf = SVMKNNDetector(contamination=0.10, svm_kernel='rbf', svm_nu=0.1, svm_gamma='scale', 
+        knn_n_neighbors=30, knn_method='median', gate_percentile=80)
     return remove_outliers(data, clf)
 
 

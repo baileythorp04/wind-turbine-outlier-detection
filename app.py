@@ -32,7 +32,7 @@ else:
     pd.DataFrame.to_csv(outliers, f"data/kelmarsh_{n}_{model}_outliers.csv")
 
 modifier = f"{model} outlier detection"
-filename = f"t{n}_{model}"
+filename = f"t{n}_{model}_gate=0.90_nu=0.04"
 #filename = f"t{n}_{modifier}"
 
 Three_Curves(f"Turbine {n}, {modifier}", inliers, outliers, filename)
