@@ -49,8 +49,8 @@ def remove_bad_codes(data, codes):
 if __name__ == "__main__":
     columns_to_keep = ["Date and time", "Wind speed (m/s)", "Power (kW)", 'Blade angle (pitch position) A (°)', "Rotor speed (RPM)"]
     columns_to_remove = ["Date and time"]
-    input_file_name = 'data/kelmarsh_2.csv'
-    output_file_name = 'data/RECOV_kelmarsh_preprocessed.csv'
+    input_file_name = 'data/kelmarsh_1.csv'
+    output_file_name = 'data/kelmarsh_preprocessed.csv'
 
     data = pd.read_csv(input_file_name)
 

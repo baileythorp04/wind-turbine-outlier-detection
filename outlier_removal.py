@@ -1,22 +1,16 @@
 from pyod.models import knn
 import pandas as pd
+from SVMKNN import SVMKNNDetector
 
 #Wind speed (m/s),Power (kW),Blade angle (pitch position) A (°),Rotor speed (RPM)
 
-
-
-
-def remove_outliers_KNN(data : pd.DataFrame):
-    
-
-    clf = knn.KNN(n_neighbors=30, method='median')
-
+def remove_outliers(data : pd.DataFrame, model):
     if 'Date and time' in data.columns:
         data = data.drop('Date and time', axis='columns')
-    clf.fit(data)
+    model.fit(data)
 
-    y_train_pred = clf.labels_  # binary labels (0: inliers, 1: outliers)
-    y_train_scores = clf.decision_scores_  # raw outlier scores
+    y_train_pred = model.labels_  # binary labels (0: inliers, 1: outliers)
+    y_train_scores = model.decision_scores_  # raw outlier scores
 
     #data['outlier'] = y_train_pred
     #data['outlier score'] = y_train_scores
@@ -24,12 +18,21 @@ def remove_outliers_KNN(data : pd.DataFrame):
     data_outliers = data[y_train_pred == 1].reset_index(drop=True)
     data_inliers = data[y_train_pred == 0].reset_index(drop=True)
     return data_inliers, data_outliers
-    
+
+def do_KNN_OD(data : pd.DataFrame):
+    clf = knn.KNN(n_neighbors=30, method='median')
+    return remove_outliers(data, clf)
+
+def do_SVMKNN_OD(data : pd.DataFrame):
+    clf = SVMKNNDetector(contamination=0.10, svm_kernel='rbf', svm_nu=0.5, svm_gamma='scale',
+        knn_n_neighbors=30, knn_method='median', gate_percentile=60)
+    return remove_outliers(data, clf)
+
 
 if __name__ == "__main__":
     data = pd.read_csv('data/RECOV_kelmarsh_preprocessed.csv')
 
-    inliers, outliers = remove_outliers_KNN(data)
+    inliers, outliers = do_KNN_OD(data)
 
     pd.DataFrame.to_csv(outliers, 'data/RECOV_kelmarsh_outliers.csv')
     pd.DataFrame.to_csv(inliers, 'data/RECOV_kelmarsh_inliers.csv')

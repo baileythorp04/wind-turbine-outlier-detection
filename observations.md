@@ -1,0 +1,1 @@
+when rotor speed is low (<8) but not zero, it is randomly distributed with generally low wind, low power, and a random blade angle. This is becuase this only happens when the turbine is starting or stopping. It takes less than 10 minutes, so only a random point in the starting/stopping process is captured

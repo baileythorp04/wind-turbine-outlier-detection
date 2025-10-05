@@ -7,11 +7,11 @@ import pandas as pd
 #Wind speed (m/s),Power (kW),Blade angle (pitch position) A (°),Rotor speed (RPM)
 
 
-def Three_Curves(n, inlier_data, outlier_data = None):
+def Three_Curves(title, inlier_data, outlier_data = None):
 
-    plt.suptitle(f"Three PCs for Turbine {n}")
-    
+
     fig, axes = plt.subplots(1, 3, figsize=(15, 5)) 
+    plt.suptitle(title)
 
     y_labels = ['Power (kW)', 'Blade angle (pitch position) A (°)', 'Rotor speed (RPM)']
 
@@ -21,10 +21,9 @@ def Three_Curves(n, inlier_data, outlier_data = None):
         ax.scatter(inlier_data['Wind speed (m/s)'], inlier_data[y_label],color='blue', marker='o', s=5)
         ax.set_xlabel('Wind speed (m/s)')
         ax.set_ylabel(y_label)
-        ax.set_xlim(left=0)
+        #ax.set_xlim(left=0)
         #ax.set_ylim(bottom=0)
 
-    axes[1].set_ylim(bottom=-5)
     plt.show()
 
 def Four_By_Four():
@@ -36,5 +35,5 @@ if __name__ == "__main__":
 
     #Three_Curves(1, inlier_data,outlier_data)
 
-    og_data = pd.read_csv('data/kelmarsh_1.csv')
-    Three_Curves(1, og_data)
+    og_data = pd.read_csv('data/kelmarsh_2.csv')
+    Three_Curves("Turbine 2, unmodified", og_data)
