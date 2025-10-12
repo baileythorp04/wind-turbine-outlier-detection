@@ -1,38 +1,50 @@
-import pandas as pd
-import os
-from preprocessing import isolate_columns, remove_extreme_outliers
-from outlier_removal import do_KNN_OD, do_SVMKNN_OD
-from graphing import Three_Curves
+from process import process_data
 
-#For new data, remember to remove top 9 empty rows, replace comma with semicolon, and remove Â
-#Then replace all � back to °
 
-n = 1 #turbine number
-model = "SVMKNN"
-force_remake_files = True
 
-if os.path.exists(f"data/kelmarsh_{n}_{model}_outliers.csv") and not force_remake_files:
-    inliers = pd.read_csv(f"data/kelmarsh_{n}_{model}_inliers.csv")
-    outliers = pd.read_csv(f"data/kelmarsh_{n}_{model}_outliers.csv")
-else:
-    data = pd.read_csv(f"data/kelmarsh_{n}.csv")
-    data = isolate_columns(data, remove=["Date and time"])
-    data = remove_extreme_outliers(data)
+#file structure for data is:
+# data/{dataset}/{turbine number}.csv
 
-    #for some reason writing then reading from csv gets better results. try using dropduplicates to see the differences before and after
-    data.to_csv("mid.csv") 
-    data = pd.read_csv("mid.csv")
 
-    if model == "KNN":
-        inliers, outliers = do_KNN_OD(data)
-    elif model == "SVMKNN":
-        inliers, outliers = do_SVMKNN_OD(data)
 
-    pd.DataFrame.to_csv(inliers, f"data/kelmarsh_{n}_{model}_inliers.csv")
-    pd.DataFrame.to_csv(outliers, f"data/kelmarsh_{n}_{model}_outliers.csv")
+def kelmarsh():
+    #For new kelmarsh data, remember to remove top 9 empty rows, replace comma with semicolon, and remove Â
+    #Then replace all � back to °
 
-modifier = f"{model} outlier detection, only 4 columns"
-filename = f"t{n}_{model}_4_cols"
-#filename = f"t{n}_{modifier}"
+    n = 1 #turbine number
+    dataset = "kelmarsh" #kelmarsh, care
+    model = "SVMKNN" #KNN, SVMKNN
 
-Three_Curves(f"Turbine {n}, {modifier}", inliers, outliers, filename)
+    nan_cols = ['Energy Export counter (kWh)', 'Energy Export (kWh)', 'Energy Import (kWh)', 'Energy Import counter (kWh)', 'Lost Production (Contractual Custom) (kWh)', 'Lost Production (Contractual Global) (kWh)', 'Potential power met mast anemometer (kW)', 'Potential power estimated (kW)', 'Potential power met mast anemometer MPC (kW)', 'Time-based Contractual Avail. (Global)', 'Time-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Global)', 'Reactive Energy Export (kvarh)', 'Reactive Energy Export counter (kvarh)', 'Reactive Energy Import (kvarh)', 'Reactive Energy Import counter (kvarh)', 'Equivalent Full Load Hours counter (s)', 'Production Factor', 'Performance Index', 'Lost Production (Production-based IEC B.2.3) (kWh)', 'Production-based IEC B.2.3 (Users View)']
+
+    important_cols = ["Date and time", "Wind speed (m/s)", "Power (kW)", 'Blade angle (pitch position) A (°)', "Rotor speed (RPM)"]
+    #important columns must be:
+    #   date and time
+    #   wind speed
+    #   power output
+    #   pitch angle
+    #   rotor speed
+
+
+    process_data(n, dataset, model, important_cols, remove_cols=nan_cols, force_remake_files=False)
+
+
+
+def care():
+
+    n = 3 #turbine number
+    dataset = "care" #kelmarsh, care
+    model = "KNN" #KNN, SVMKNN
+
+    important_cols = ["time_stamp", "wind_speed_3_avg", "sensor_50", 'sensor_5_avg', "sensor_52_avg"]
+    #important columns must be:
+    #   date and time
+    #   wind speed
+    #   power output
+    #   pitch angle
+    #   rotor speed
+
+
+    process_data(n, dataset, model, important_cols, force_remake_files=False)
+
+care()
