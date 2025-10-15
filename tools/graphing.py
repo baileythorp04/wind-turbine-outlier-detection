@@ -15,9 +15,9 @@ def Three_Curves(title, inlier_data, outlier_data = None, filename = None):
     y_labels = ['Power (kW)', 'Pitch angle (°)', 'Rotor speed (RPM)']
 
     for ax, y_label in zip(axes, y_labels):
+        ax.scatter(inlier_data['Wind speed (m/s)'], inlier_data[y_label],color='blue', marker='o', s=5)
         if outlier_data is not None:
             ax.scatter(outlier_data['Wind speed (m/s)'], outlier_data[y_label],color='red', marker='o', s=5)
-        ax.scatter(inlier_data['Wind speed (m/s)'], inlier_data[y_label],color='blue', marker='o', s=5)
         ax.set_xlabel('Wind speed (m/s)')
         ax.set_ylabel(y_label)
         #ax.set_xlim(left=0)

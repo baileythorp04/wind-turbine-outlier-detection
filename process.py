@@ -17,8 +17,8 @@ def process_data(n, dataset, model, important_cols, title_modifier, remove_cols=
         data = remove_extreme_outliers(data)
 
         #for some reason writing then reading from csv gets better results. try using dropduplicates to see the differences before and after
-        data.to_csv("mid.csv") 
-        data = pd.read_csv("mid.csv")
+        #data.to_csv("mid.csv") 
+        #data = pd.read_csv("mid.csv")
 
         if model == "KNN":
             inliers, outliers = do_KNN_OD(data)

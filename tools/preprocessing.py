@@ -2,6 +2,8 @@
 from pyod.models.knn import KNN
 import numpy as np
 import pandas as pd
+from tools.kelmarsh_stopped_removal import remove_stopped_data
+from tools.graphing import Three_Curves
 
 # isolate relevant columns:
     # date and time : Date and time
@@ -43,19 +45,31 @@ def rename_columns(data : pd.DataFrame,  important_cols):
     return data
 
 
-def remove_extreme_outliers(data):
+def remove_extreme_outliers(data : pd.DataFrame):
 
     data = data.dropna()
     data = data[data['Power (kW)'] > 0 ]
     data = data[data['Pitch angle (°)'] < 20]
+    #data = data[data['Rotor speed (RPM)'] > 8] #11 for care, 8 for kelmarsh
 
 
-    data = data[(data['status_type_id'].isin([1,3,4,5]))]
+    #CARE dataset only
+    if 'status_type_id' in data.columns:
+        print("CARE exlusive prep happening")
+        data = data[(data['status_type_id'].isin([0]))]
 
-    data = data[data['train_test'] == 'train']
-    data.drop('train_test', axis='columns', inplace=True)
+        data = data[data['train_test'] == 'train']
+        data.drop('train_test', axis='columns', inplace=True)
 
-    data.drop(labels=['asset_id','id','status_type_id'], axis='columns', inplace=True)
+        data.drop(labels=['asset_id','id','status_type_id'], axis='columns', inplace=True)
+    else:
+        print("kelmarsh exclusive prep happening")
+        data, removed_data = remove_stopped_data(data)
+        
+        Three_Curves("removed stopped data in blue", inlier_data=removed_data, outlier_data=data, filename="stopped codes plot, less")
+        print("stop here")
+        
+
     
 
     return data
