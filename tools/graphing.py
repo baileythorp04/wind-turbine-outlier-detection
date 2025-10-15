@@ -12,7 +12,7 @@ def Three_Curves(title, inlier_data, outlier_data = None, filename = None):
 
     fig, axes = plt.subplots(1, 3, figsize=(15, 5)) 
 
-    y_labels = ['Power (kW)', 'Blade angle (pitch position) A (°)', 'Rotor speed (RPM)']
+    y_labels = ['Power (kW)', 'Pitch angle (°)', 'Rotor speed (RPM)']
 
     for ax, y_label in zip(axes, y_labels):
         if outlier_data is not None:

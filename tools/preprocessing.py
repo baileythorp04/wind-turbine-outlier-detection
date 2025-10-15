@@ -49,6 +49,15 @@ def remove_extreme_outliers(data):
     data = data[data['Power (kW)'] > 0 ]
     data = data[data['Pitch angle (°)'] < 20]
 
+
+    data = data[(data['status_type_id'].isin([1,3,4,5]))]
+
+    data = data[data['train_test'] == 'train']
+    data.drop('train_test', axis='columns', inplace=True)
+
+    data.drop(labels=['asset_id','id','status_type_id'], axis='columns', inplace=True)
+    
+
     return data
 
 def remove_bad_codes(data, codes):

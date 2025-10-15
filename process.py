@@ -4,7 +4,7 @@ from tools.preprocessing import isolate_columns, rename_columns, remove_extreme_
 from tools.outlier_removal import do_KNN_OD, do_SVMKNN_OD
 from tools.graphing import Three_Curves
 
-def process_data(n, dataset, model, important_cols, remove_cols=[], force_remake_files=False):
+def process_data(n, dataset, model, important_cols, title_modifier, remove_cols=[], force_remake_files=False):
         
     #### Run a model on raw data to get inliers and outliers ####
     if os.path.exists(f"data/{dataset}/{n}_{model}_outliers.csv") and not force_remake_files:
@@ -28,10 +28,9 @@ def process_data(n, dataset, model, important_cols, remove_cols=[], force_remake
         pd.DataFrame.to_csv(inliers, f"data/{dataset}/{n}_{model}_inliers.csv")
         pd.DataFrame.to_csv(outliers, f"data/{dataset}/{n}_{model}_outliers.csv")
 
-    modifier = f"{model} outlier detection"
-    filename = f"t{n}_{modifier}"
+    filename = f"{dataset}/t{n}_{title_modifier}"
 
-    Three_Curves(f"Turbine {n}, {modifier}", inliers, outliers, filename)
+    Three_Curves(f"Turbine {n}, {title_modifier}", inliers, outliers, filename)
 
 
 

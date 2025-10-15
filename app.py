@@ -34,7 +34,7 @@ def care():
 
     n = 3 #turbine number
     dataset = "care" #kelmarsh, care
-    model = "KNN" #KNN, SVMKNN
+    model = "SVMKNN" #KNN, SVMKNN
 
     important_cols = ["time_stamp", "wind_speed_3_avg", "sensor_50", 'sensor_5_avg', "sensor_52_avg"]
     #important columns must be:
@@ -44,7 +44,11 @@ def care():
     #   pitch angle
     #   rotor speed
 
+    #title = f"{model} outlier detection"
+    title = f"{model} outlier detection, only bad operation"
+    
 
-    process_data(n, dataset, model, important_cols, force_remake_files=False)
+    process_data(n, dataset, model, important_cols, title, force_remake_files=True)
+    
 
 care()
