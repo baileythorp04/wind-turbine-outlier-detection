@@ -2,7 +2,6 @@
 from pyod.models.knn import KNN
 import numpy as np
 import pandas as pd
-from tools.kelmarsh_stopped_removal import remove_stopped_data
 from tools.graphing import Three_Curves
 
 # isolate relevant columns:
@@ -25,7 +24,7 @@ def remove_extreme_outliers(data : pd.DataFrame):
     data = data.dropna()
     data = data[data['Power (kW)'] > 0 ]
     data = data[data['Pitch angle (°)'] < 20]
-    #data = data[data['Rotor speed (RPM)'] > 8] #11 for care, 8 for kelmarsh
+    data = data[data['Rotor speed (RPM)'] > 11] #11 for care, 8 for kelmarsh
 
 
     #CARE dataset only
@@ -39,10 +38,6 @@ def remove_extreme_outliers(data : pd.DataFrame):
         data.drop(labels=['asset_id','id','status_type_id'], axis='columns', inplace=True)
     else:
         print("kelmarsh exclusive prep happening")
-        data, removed_data = remove_stopped_data(data)
-        
-        Three_Curves("removed stopped data in blue", inlier_data=removed_data, outlier_data=data, filename="stopped codes plot, less")
-        print("stop here")
         
 
     
@@ -65,5 +60,5 @@ if __name__ == "__main__":
     data = remove_extreme_outliers(data)
     #data = remove_bad_codes(data, codes)
 
-    pd.DataFrame.to_csv(data, output_file_name)
+    pd.DataFrame.to_csv(data, output_file_name, index=False)
 

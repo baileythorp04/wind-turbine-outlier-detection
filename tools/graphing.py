@@ -28,7 +28,7 @@ def Three_Curves(title, blue_data, red_data = None, green_data = None, filename 
 
     plt.suptitle(title)
     if filename is not None:
-        plt.savefig(f"graphs/{filename}.png")
+        plt.savefig(f"{filename}.png")
     plt.show()
 
 def Four_By_Four():

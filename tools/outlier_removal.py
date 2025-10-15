@@ -34,8 +34,8 @@ if __name__ == "__main__":
 
     inliers, outliers = do_KNN_OD(data)
 
-    pd.DataFrame.to_csv(outliers, 'data/RECOV_kelmarsh_outliers.csv')
-    pd.DataFrame.to_csv(inliers, 'data/RECOV_kelmarsh_inliers.csv')
+    pd.DataFrame.to_csv(outliers, 'data/RECOV_kelmarsh_outliers.csv', index=False)
+    pd.DataFrame.to_csv(inliers, 'data/RECOV_kelmarsh_inliers.csv', index=False)
 
     #Cant do testing without ground truth. The paper gets ground truth by doing uisng many models and averaging/maxing the results
     #y_test_pred, y_test_pred_confidence = clf.predict(X_test, return_confidence=True)  # outlier labels (0 or 1) and confidence in the range of [0,1]

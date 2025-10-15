@@ -29,7 +29,7 @@ def rename_columns(data : pd.DataFrame,  important_cols):
     return data
 
 
-def kelmarsh():
+def kelmarsh(n):
     
     #For new kelmarsh data, remember to remove top 9 empty rows, replace comma with semicolon, and remove Â
     #Then replace all � back to °
@@ -39,23 +39,29 @@ def kelmarsh():
     important_cols = ["Date and time", "Wind speed (m/s)", "Power (kW)", 'Blade angle (pitch position) A (°)', "Rotor speed (RPM)"]
 
 
-    data = pd.read_csv(f"data/kelmarsh/1_original.csv")
+    data = pd.read_csv(f"data/kelmarsh/{n}_original.csv")
     data = isolate_columns(data, remove=nan_cols) 
     data = rename_columns(data, important_cols)
-    data.to_csv(f"data/kelmarsh/1.csv", index=False)
+    data.to_csv(f"data/kelmarsh/{n}.csv", index=False)
 
 
 
-def care():
+def care(n):
 
     important_cols = ["time_stamp", "wind_speed_3_avg", "sensor_50", 'sensor_5_avg', "sensor_52_avg"]
 
-    data = pd.read_csv(f"data/kelmarsh/1_original.csv")
-    #data = isolate_columns(data, remove=nan_cols) 
+    data = pd.read_csv(f"data/care/{n}_original.csv")
+
+    remove_cols = [col for col in data.columns if col.endswith(('max', 'min', 'std'))]
+
+
+
+
+    data = isolate_columns(data, remove=remove_cols) 
     data = rename_columns(data, important_cols)
-    data.to_csv(f"data/kelmarsh/1.csv", index=False)
+    data.to_csv(f"data/care/{n}.csv", index=False)
 
 
-#kelmarsh()
-#care()
+#kelmarsh(1)
+care(3)
 
