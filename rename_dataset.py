@@ -1,0 +1,61 @@
+import pandas as pd
+from tools.preprocessing import *
+
+#important columns must be:
+#   date and time
+#   wind speed
+#   power output
+#   pitch angle
+#   rotor speed
+    
+def isolate_columns(data : pd.DataFrame, keep=[], remove=[]):
+    for col in remove:
+        if col in data.columns:
+            data = data.drop(labels=col, axis='columns')
+        
+    if len(keep) > 0:
+        data = data[keep]
+
+    return data
+
+def rename_columns(data : pd.DataFrame,  important_cols):
+    #rename date&time and the 4 graphed columns
+    correct_important_cols = ["Date and time", "Wind speed (m/s)", "Power (kW)", 'Pitch angle (°)', "Rotor speed (RPM)"]
+    if len(important_cols) == len(correct_important_cols):
+        for old_col, new_col in zip(important_cols, correct_important_cols):
+            data.rename(columns={old_col: new_col}, inplace=True)
+    else:
+        print("Error: Did not provide exactly 5 important columns to rename to standard names")
+    return data
+
+
+def kelmarsh():
+    
+    #For new kelmarsh data, remember to remove top 9 empty rows, replace comma with semicolon, and remove Â
+    #Then replace all � back to °
+
+
+    nan_cols = ['Energy Export counter (kWh)', 'Energy Export (kWh)', 'Energy Import (kWh)', 'Energy Import counter (kWh)', 'Lost Production (Contractual Custom) (kWh)', 'Lost Production (Contractual Global) (kWh)', 'Potential power met mast anemometer (kW)', 'Potential power estimated (kW)', 'Potential power met mast anemometer MPC (kW)', 'Time-based Contractual Avail. (Global)', 'Time-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Custom)', 'Production-based Contractual Avail. (Global)', 'Reactive Energy Export (kvarh)', 'Reactive Energy Export counter (kvarh)', 'Reactive Energy Import (kvarh)', 'Reactive Energy Import counter (kvarh)', 'Equivalent Full Load Hours counter (s)', 'Production Factor', 'Performance Index', 'Lost Production (Production-based IEC B.2.3) (kWh)', 'Production-based IEC B.2.3 (Users View)']
+    important_cols = ["Date and time", "Wind speed (m/s)", "Power (kW)", 'Blade angle (pitch position) A (°)', "Rotor speed (RPM)"]
+
+
+    data = pd.read_csv(f"data/kelmarsh/1_original.csv")
+    data = isolate_columns(data, remove=nan_cols) 
+    data = rename_columns(data, important_cols)
+    data.to_csv(f"data/kelmarsh/1.csv", index=False)
+
+
+
+def care():
+
+    important_cols = ["time_stamp", "wind_speed_3_avg", "sensor_50", 'sensor_5_avg', "sensor_52_avg"]
+
+    data = pd.read_csv(f"data/kelmarsh/1_original.csv")
+    #data = isolate_columns(data, remove=nan_cols) 
+    data = rename_columns(data, important_cols)
+    data.to_csv(f"data/kelmarsh/1.csv", index=False)
+
+
+#kelmarsh()
+#care()
+

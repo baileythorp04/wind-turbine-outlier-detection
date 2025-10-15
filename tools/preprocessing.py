@@ -18,31 +18,6 @@ from tools.graphing import Three_Curves
         # any missing value
 
 
-#
-def isolate_columns(data : pd.DataFrame, keep=[], remove=[]):
-
-
-    for col in remove:
-        if col in data.columns:
-            data = data.drop(labels=col, axis='columns')
-        
-
-    if len(keep) > 0:
-        data = data[keep]
-
-    
-
-    return data
-
-def rename_columns(data : pd.DataFrame,  important_cols):
-    #rename date&time and the 4 graphed columns
-    correct_important_cols = ["Date and time", "Wind speed (m/s)", "Power (kW)", 'Pitch angle (°)', "Rotor speed (RPM)"]
-    if len(important_cols) == len(correct_important_cols):
-        for old_col, new_col in zip(important_cols, correct_important_cols):
-            data.rename(columns={old_col: new_col}, inplace=True)
-    else:
-        print("Error: Did not provide exactly 5 important columns to rename to standard names")
-    return data
 
 
 def remove_extreme_outliers(data : pd.DataFrame):
@@ -86,7 +61,7 @@ if __name__ == "__main__":
 
     data = pd.read_csv(input_file_name)
 
-    data = isolate_columns(data, remove=columns_to_remove)
+    #data = isolate_columns(data, remove=columns_to_remove)
     data = remove_extreme_outliers(data)
     #data = remove_bad_codes(data, codes)
 
