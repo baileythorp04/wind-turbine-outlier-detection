@@ -29,7 +29,7 @@ def Three_Curves(title, blue_data, red_data = None, green_data = None, filename 
     plt.suptitle(title)
     if filename is not None:
         plt.savefig(f"{filename}.png")
-    plt.show()
+    #plt.show()
 
 def Four_By_Four():
     pass
@@ -40,5 +40,5 @@ if __name__ == "__main__":
 
     #Three_Curves(1, blue_data,red_data)
 
-    og_data = pd.read_csv('data/kelmarsh_2.csv')
-    Three_Curves("Turbine 2, unmodified", og_data)
+    og_data = pd.read_csv('data/kelmarsh/1_zeyad.csv')
+    Three_Curves("turbine 1 zeyad clean data", og_data, filename="graphs/kelmarsh/t1_zeyad_clean")

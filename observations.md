@@ -3,3 +3,5 @@ when rotor speed is low (<8) but not zero, it is randomly distributed with gener
 removing stop statuses from kelmarsh data exclusively removed most (but not all) of this scattered data. So I think it is safe to cut it out completely
 
 when writing and reading from csv it saves an index for reach row. when that gets fed into the KNN, it seems to just spread out the outliers. It appeared to make KNN more effective but SVMKNN worse
+
+Once a PC (and bootstrapped PI) is formed, it can be used as a NBM to detect anomalies in the data. However, the hard part is knowing how to use the NBM for anything useful
