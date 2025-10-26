@@ -29,7 +29,7 @@ def Three_Curves(title, blue_data, red_data = None, green_data = None, filename 
     plt.suptitle(title)
     if filename is not None:
         plt.savefig(f"{filename}.png")
-    #plt.show()
+    plt.show()
 
 def Four_By_Four():
     pass
@@ -40,5 +40,17 @@ if __name__ == "__main__":
 
     #Three_Curves(1, blue_data,red_data)
 
-    og_data = pd.read_csv('data/kelmarsh/1_zeyad.csv')
-    Three_Curves("turbine 1 zeyad clean data", og_data, filename="graphs/kelmarsh/t1_zeyad_clean")
+    data = pd.read_csv('data/care/3.csv')
+    #Three_Curves("t3 care rpm on bottom", data, filename="rpm on bottom")
+
+    print(data.columns)
+    fig, axes = plt.subplots(1, 1, figsize=(1, 5)) 
+
+    y_labels = ['Power (kW)']
+    x_label = 'sensor_50'
+
+    for ax, y_label in zip([axes], y_labels):
+        ax.scatter(data[x_label], data[y_label],color='blue', marker='o', s=5)
+    
+    plt.suptitle("active power vs grid power")
+    plt.show()

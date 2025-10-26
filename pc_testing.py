@@ -2,10 +2,17 @@ from sklearn.neighbors import KNeighborsRegressor as KNNR
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, root_mean_squared_error, mean_absolute_error
 import pandas as pd
+import numpy as np
 from tools.graphing import Three_Curves
+import matplotlib.pyplot as plt
 
-data_file_names = ["3_original_renamed", "3", "3_KNN_inliers", "3_SVMKNN_inliers", "3_cutlowrpm", "3_KNN_inliers_cutlowrpm", "3_SVMKNN_inliers_cutlowrpm",]
+data_file_names = ["3_original_renamed", "3_extreme_outliers_removed", "3_KNN_inliers", "3_SVMKNN_inliers", "3_cutlowrpm", "3_KNN_inliers_cutlowrpm", "3_SVMKNN_inliers_cutlowrpm",]
+#data_file_names = ["3_extreme_outliers_removed"]
 output_cols = ["Power (kW)", 'Pitch angle (°)', "Rotor speed (RPM)"]
+
+
+###### try simple with just one regression test and one graph ######
+
 
 
 i = 0
@@ -13,13 +20,15 @@ df = pd.DataFrame(columns=['R2', 'RMSE', 'MAE'])
 
 
 for filename in data_file_names:
+    ### graph setup ###
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5)) 
     data = pd.read_csv(f"pc_test_data/{filename}.csv")
 
-    pred_graph_df = pd.DataFrame()
-    real_graph_df = pd.DataFrame()
+    for ax, output_col in zip(axes, output_cols):
 
-    for output_col in output_cols:
         print(f"testing {filename} with {output_col}.", end=" ")
+
+        ### testing model setup ###
 
         #X is input data      
         #Y is output data
@@ -31,6 +40,9 @@ for filename in data_file_names:
         reg = KNNR()
         reg = reg.fit(X_train, y_train)
 
+
+
+        #### testing ####
         y_pred = reg.predict(X_test)
 
         R2 = r2_score(y_test, y_pred) # closer to 1.0 is better
@@ -45,16 +57,34 @@ for filename in data_file_names:
 
         df.loc[len(df)] = [R2, RMSE, MAE]
         
-        pred_graph_df[output_col] = y_pred[:, 0]
-        real_graph_df[output_col] = y_test[y_test.columns[0]]
+        a = pd.DataFrame()
+        a.columns
+
+        #### graphing ####
+        mn = min(X_test[X_test.columns[0]]) #convert dataframe of one column into array
+        mx = max(X_test[X_test.columns[0]])
+        values = np.linspace(mn, mx, num=1000)
+
+        y_label = output_col
+        x_label = 'Wind speed (m/s)'
+
+        X_curve = pd.DataFrame(values, columns=[x_label])
+        y_curve = reg.predict(X_curve)
 
 
-        pred_graph_df["Wind speed (m/s)"] = X_test[X_test.columns[0]]
-        real_graph_df["Wind speed (m/s)"] = X_test[X_test.columns[0]]
+        ax.scatter(X_test[x_label], y_test[y_label], color='red', marker='o', s=5)
+        ax.scatter(X_curve[x_label], y_curve,color='blue', marker='o', s=5)
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
+        #ax.set_xlim(left=0)
+        #ax.set_ylim(bottom=0)
         i += 1
 
-    Three_Curves(f"testing of {filename}", blue_data=pred_graph_df, red_data=real_graph_df, filename=f"testing_{filename}")
-
+    #### graphing ####
+    plt.suptitle(f"predicted power from wind speed - {filename}")
+    if filename is not None:
+        plt.savefig(f"testing_{filename}.png")
+    #plt.show()
 
 
 

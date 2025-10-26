@@ -24,7 +24,7 @@ def remove_extreme_outliers(data : pd.DataFrame):
     data = data.dropna()
     data = data[data['Power (kW)'] > 0 ]
     data = data[data['Pitch angle (°)'] < 20]
-    data = data[data['Rotor speed (RPM)'] > 11] #11 for care, 8 for kelmarsh
+    data = data[data['Rotor speed (RPM)'] < 11] #11 for care, 8 for kelmarsh
 
 
     #CARE dataset only

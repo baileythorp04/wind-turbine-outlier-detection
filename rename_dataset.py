@@ -48,7 +48,8 @@ def kelmarsh(n):
 
 def care(n):
 
-    important_cols = ["time_stamp", "wind_speed_3_avg", "sensor_50", 'sensor_5_avg', "sensor_52_avg"]
+    important_cols = ["time_stamp", "wind_speed_3_avg", "power_30_avg", 'sensor_5_avg', "sensor_52_avg"]
+# replace sensor_50 with power_30_avg for kW instead of wH
 
     data = pd.read_csv(f"data/care/{n}_original.csv")
 
@@ -59,7 +60,8 @@ def care(n):
 
     data = isolate_columns(data, remove=remove_cols) 
     data = rename_columns(data, important_cols)
-    data.to_csv(f"data/care/{n}.csv", index=False)
+    data = remove_extreme_outliers(data)
+    data.to_csv(f"data/care/{n}_cutlowrpm.csv", index=False)
 
 
 #kelmarsh(1)

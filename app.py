@@ -12,7 +12,7 @@ model = "KNN" #KNN, SVMKNN
 force_remake_files = True
 
 graph_title = f"Turbine {n}, {model} outlier detection"
-filename = f"graphs/{dataset}/t{n}_{model}_cutlowrpm"
+filename = f"graphs/{dataset}/t{n}_{model}_onlylowrpm"
 
 
 #### Run a model on raw data to get inliers and outliers ####
