@@ -9,6 +9,8 @@ from tools.kelmarsh_stopped_removal import remove_stopped_data
 n = 3 #turbine number
 dataset = "care" #kelmarsh, care
 model = "KNN" #KNN, SVMKNN
+cutlowrpm = True
+
 force_remake_files = True
 
 graph_title = f"Turbine {n}, {model} outlier detection"
@@ -22,7 +24,7 @@ if os.path.exists(f"data/{dataset}/{n}_{model}_outliers.csv") and not force_rema
 else:
 
     data = pd.read_csv(f"data/{dataset}/{n}.csv")
-    data = remove_extreme_outliers(data)
+    data = remove_extreme_outliers(data, cutlowrpm)
 
     pd.DataFrame.to_csv(data, f"data/{dataset}/{n}_cutlowrpm.csv", index=False)
 
@@ -34,11 +36,6 @@ else:
     pd.DataFrame.to_csv(inliers, f"data/{dataset}/{n}_{model}_inliers_cutlowrpm.csv", index=False)
     pd.DataFrame.to_csv(outliers, f"data/{dataset}/{n}_{model}_outliers_cutlowrpm.csv", index=False)
 
-
-    ##### testing removing stop status data ####
-    #data, removed_data = remove_stopped_data(data)    
-    #Three_Curves("removed stopped data in blue", red_data=removed_data, blue_data=data, filename="stopped codes plot, less")
-    #print("stop here")
         
 
 

@@ -19,23 +19,24 @@ from tools.graphing import Three_Curves
 
 
 
-def remove_extreme_outliers(data : pd.DataFrame):
+def remove_extreme_outliers(data : pd.DataFrame, cutlowrpm):
 
     data = data.dropna()
     data = data[data['Power (kW)'] > 0 ]
     data = data[data['Pitch angle (°)'] < 20]
-    data = data[data['Rotor speed (RPM)'] < 11] #11 for care, 8 for kelmarsh
+    if cutlowrpm:
+        data = data[data['Rotor speed (RPM)'] > 11] #11 for care, 8 for kelmarsh
 
 
     #CARE dataset only
-    if 'status_type_id' in data.columns:
+    if True:
         print("CARE exlusive prep happening")
-        data = data[(data['status_type_id'].isin([0]))]
+        #data = data[(data['status_type_id'].isin([0]))]
 
-        data = data[data['train_test'] == 'train']
-        data.drop('train_test', axis='columns', inplace=True)
+        #data = data[data['train_test'] == 'train']
+        #data.drop('train_test', axis='columns', inplace=True)
 
-        data.drop(labels=['asset_id','id','status_type_id'], axis='columns', inplace=True)
+        #data.drop(labels=['asset_id','id','status_type_id'], axis='columns', inplace=True)
     else:
         print("kelmarsh exclusive prep happening")
         

@@ -6,8 +6,8 @@ import numpy as np
 from tools.graphing import Three_Curves
 import matplotlib.pyplot as plt
 
-data_file_names = ["3_original_renamed", "3_extreme_outliers_removed", "3_KNN_inliers", "3_SVMKNN_inliers", "3_cutlowrpm", "3_KNN_inliers_cutlowrpm", "3_SVMKNN_inliers_cutlowrpm",]
-#data_file_names = ["3_extreme_outliers_removed"]
+#data_file_names = ["3_original_renamed", "3_extreme_outliers_removed", "3_KNN_inliers", "3_SVMKNN_inliers", "3_cutlowrpm", "3_KNN_inliers_cutlowrpm", "3_SVMKNN_inliers_cutlowrpm",]
+data_file_names = ["3_KNN_inliers", "3_SVMKNN_inliers", "3_KNN_inliers_cutlowrpm", "3_SVMKNN_inliers_cutlowrpm",]
 output_cols = ["Power (kW)", 'Pitch angle (°)', "Rotor speed (RPM)"]
 
 
@@ -22,7 +22,8 @@ df = pd.DataFrame(columns=['R2', 'RMSE', 'MAE'])
 for filename in data_file_names:
     ### graph setup ###
     fig, axes = plt.subplots(1, 3, figsize=(15, 5)) 
-    data = pd.read_csv(f"pc_test_data/{filename}.csv")
+    train = pd.read_csv(f"data/care/tt/{filename}_train.csv")
+    test = pd.read_csv(f"data/care/tt/{filename}_test.csv")
 
     for ax, output_col in zip(axes, output_cols):
 
@@ -32,10 +33,11 @@ for filename in data_file_names:
 
         #X is input data      
         #Y is output data
-        X = data[["Wind speed (m/s)"]] 
-        y = data[[output_col]]
+        X_train = train[["Wind speed (m/s)"]] 
+        y_train = train[[output_col]]
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+        X_test = test[["Wind speed (m/s)"]] 
+        y_test = test[[output_col]]
 
         reg = KNNR()
         reg = reg.fit(X_train, y_train)
@@ -83,7 +85,7 @@ for filename in data_file_names:
     #### graphing ####
     plt.suptitle(f"predicted power from wind speed - {filename}")
     if filename is not None:
-        plt.savefig(f"testing_{filename}.png")
+        plt.savefig(f"tt_{filename}.png")
     #plt.show()
 
 
@@ -94,7 +96,7 @@ for filename in data_file_names:
 
 output_df = df.T
 
-output_df.to_csv("raw_results.csv")
+output_df.to_csv("raw_results_tt.csv")
 
 
 

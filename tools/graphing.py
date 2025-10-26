@@ -7,7 +7,7 @@ import pandas as pd
 #Wind speed (m/s),Power (kW),Blade angle (pitch position) A (°),Rotor speed (RPM)
 
 
-def Three_Curves(title, blue_data, red_data = None, green_data = None, filename = None):
+def Three_Curves( blue_data, red_data = None, green_data = None, title = None, filename = None):
 
 
     fig, axes = plt.subplots(1, 3, figsize=(15, 5)) 
@@ -26,10 +26,11 @@ def Three_Curves(title, blue_data, red_data = None, green_data = None, filename 
         #ax.set_xlim(left=0)
         #ax.set_ylim(bottom=0)
 
-    plt.suptitle(title)
     if filename is not None:
         plt.savefig(f"{filename}.png")
-    plt.show()
+    if title is not None:
+        plt.suptitle(title)
+        plt.show()
 
 def Four_By_Four():
     pass
@@ -47,7 +48,7 @@ if __name__ == "__main__":
     fig, axes = plt.subplots(1, 1, figsize=(1, 5)) 
 
     y_labels = ['Power (kW)']
-    x_label = 'sensor_50'
+    x_label = 'power_30_avg'
 
     for ax, y_label in zip([axes], y_labels):
         ax.scatter(data[x_label], data[y_label],color='blue', marker='o', s=5)
